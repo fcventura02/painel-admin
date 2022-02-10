@@ -1,4 +1,5 @@
 import Layout from "../components/template/Layout";
+import { AppConsumer } from "../data/context/AppContext";
 
 export default function Notification() {
   return (
@@ -6,7 +7,9 @@ export default function Notification() {
       titulo="Notificações"
       subtitulo="Fique por dentro do que tem acontecido"
     >
-      <h1>Teste conteudo</h1>
+      <AppConsumer>
+        {dados=><h3>{dados.name}</h3>}
+      </AppConsumer>
     </Layout>
   );
 }
