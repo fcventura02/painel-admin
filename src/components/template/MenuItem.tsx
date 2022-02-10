@@ -14,7 +14,7 @@ export default function MenuItem({ url, texto, icon, className, onClick }: IMenu
       <a
         className={`
         flex flex-col justify-center items-center
-        h-20 w-20 text-gray-600 ${className}
+        h-20 w-20 dark:text-gray-500 ${className}
         `}
       >
         {icon}
@@ -35,6 +35,7 @@ export default function MenuItem({ url, texto, icon, className, onClick }: IMenu
       className={`
       cursor-pointer
     hover:bg-gray-100 
+    hover:dark:bg-gray-800 
   `}
     >
       {url ? <Link href={url}>{renderLink()}</Link> : renderLink()}

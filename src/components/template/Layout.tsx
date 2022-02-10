@@ -13,7 +13,7 @@ export default function Layout({ titulo, subtitulo, children }: ILayoutProps) {
   return (
     <div
       className={`
-         flex h-screen w-screen 
+        dark flex h-screen w-screen 
         `}
     >
       <MenuLateral />

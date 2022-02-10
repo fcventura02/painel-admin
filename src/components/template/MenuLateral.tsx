@@ -9,6 +9,8 @@ export default function MenuLateral(props: IMenuLateral) {
     <aside
       className={`
     flex flex-col
+    bg-gray-200
+    dark:bg-gray-900 
   `}
     >
       <div
@@ -33,7 +35,9 @@ export default function MenuLateral(props: IMenuLateral) {
         <MenuItem
           onClick={() => console.log("Saindo")}
           texto="Sair"
-          className="text-red-600 hover:bg-red-600 hover:text-white"
+          className="text-red-600 dark:text-red-600 
+          hover:bg-red-600 
+          hover:text-white hover:dark:text-white"
           icon={IconLogout}
         />
       </ul>
