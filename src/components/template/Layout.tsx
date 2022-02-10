@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import useAppData from "../../data/hook/useAppData";
 import Contents from "./Contents";
 import Header from "./Header";
 import MenuLateral from "./MenuLateral";
@@ -10,10 +11,11 @@ interface ILayoutProps {
 }
 
 export default function Layout({ titulo, subtitulo, children }: ILayoutProps) {
+  const { tema } = useAppData();
   return (
     <div
       className={`
-        dark flex h-screen w-screen 
+        ${tema} flex h-screen w-screen 
         `}
     >
       <MenuLateral />
