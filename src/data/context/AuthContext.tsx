@@ -85,6 +85,8 @@ export function AuthProvider(props) {
     if (Cookies.get("admin-template-auth")) {
       const cancelar = firebase.auth().onAuthStateChanged(configSection);
       return () => cancelar();
+    } else {
+      setLoading(false)
     }
   }, []);
 
