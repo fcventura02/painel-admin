@@ -137,13 +137,13 @@ export const IconGoogle = () => (
   >
     <g
       fill="none"
-      fill-rule="nonzero"
+      fillRule="nonzero"
       stroke="none"
-      stroke-width="1"
-      stroke-linecap="butt"
-      stroke-linejoin="miter"
-      stroke-miterlimit="10"
-      stroke-dashoffset="0"
+      strokeWidth="1"
+      strokeLinecap="butt"
+      strokeLinejoin="miter"
+      strokeMiterlimit="10"
+      strokeDashoffset="0"
       style={{ mixBlendMode: "normal" }}
     >
       <path d="M0,172v-172h172v172z" fill="none"></path>

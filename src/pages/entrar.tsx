@@ -1,8 +1,10 @@
 import { useState } from "react";
 import AuthInput from "../components/auth/AuthInput";
 import { IconGithub, IconGoogle, IconWarning } from "../components/icons";
+import useAuth from "../data/hook/useAuth";
 
 export default function Authenticate() {
+  const {user, loginGoogle} = useAuth()
   const [mode, setMode] = useState<"login" | "register">("login");
   const [error, setError] = useState(null);
   const [email, setEmail] = useState("");
@@ -99,7 +101,7 @@ export default function Authenticate() {
         />
 
         <button
-          onClick={submitForm}
+          onClick={loginGoogle}
           title="Entrar com Google"
           className={`
                 w-full bg-gray-300 hover:bg-gray-200
