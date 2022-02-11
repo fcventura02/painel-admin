@@ -27,7 +27,6 @@ async function userNormalizer(userFirebase: firebase.User): Promise<IUser> {
 }
 
 function manageCookie(loged: boolean) {
-  console.log(loged);
   if (loged) {
     Cookies.set("admin-template-auth", loged, {
       expires: 7,
@@ -42,7 +41,6 @@ export function AuthProvider(props) {
   const [loading, setLoading] = useState(true);
 
   async function configSection(userFirebase) {
-    console.log(userFirebase);
     if (userFirebase?.email) {
       const userData = await userNormalizer(userFirebase);
       setUser(userData);
