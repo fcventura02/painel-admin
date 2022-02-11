@@ -7,6 +7,7 @@ import IUser from "../../model/user";
 interface IAuthContext {
   user?: IUser;
   loading?: boolean;
+  logout?: () => Promise<void>;
   loginGoogle?: () => Promise<void>;
   loginGithub?: () => Promise<void>;
 }
@@ -42,7 +43,7 @@ export function AuthProvider(props) {
 
   async function configSection(userFirebase) {
     console.log(userFirebase);
-    if (userFirebase.email) {
+    if (userFirebase?.email) {
       const userData = await userNormalizer(userFirebase);
       setUser(userData);
       manageCookie(true);
@@ -57,22 +58,34 @@ export function AuthProvider(props) {
   }
 
   async function loginGoogle() {
-    const resp = await firebase
-      .auth()
-      .signInWithPopup(new firebase.auth.GoogleAuthProvider());
+    try {
+      setLoading(true);
+      const resp = await firebase
+        .auth()
+        .signInWithPopup(new firebase.auth.GoogleAuthProvider());
 
-    console.log(resp);
-    if (resp.user?.email) {
-      const resUser = await userNormalizer(resp.user);
-      setUser(resUser);
       configSection(resp.user);
       Router.push("/");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function logout() {
+    try {
+      setLoading(true);
+      await firebase.auth().signOut();
+      await configSection(null);
+    } finally {
+      setLoading(false);
     }
   }
 
   useEffect(() => {
-    const cancelar = firebase.auth().onAuthStateChanged(configSection);
-    return () => cancelar();
+    if (Cookies.get("admin-template-auth")) {
+      const cancelar = firebase.auth().onAuthStateChanged(configSection);
+      return () => cancelar();
+    }
   }, []);
 
   return (
@@ -80,6 +93,7 @@ export function AuthProvider(props) {
       value={{
         user,
         loading,
+        logout,
         loginGoogle,
       }}
     >

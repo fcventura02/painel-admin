@@ -1,3 +1,4 @@
+import useAuth from "../../data/hook/useAuth";
 import { IconHome, IconLogout, IconNotification, IconSettings } from "../icons";
 import Logo from "./Logo";
 import MenuItem from "./MenuItem";
@@ -5,6 +6,7 @@ import MenuItem from "./MenuItem";
 interface IMenuLateral {}
 
 export default function MenuLateral(props: IMenuLateral) {
+  const {logout} = useAuth()
   return (
     <aside
       className={`
@@ -33,7 +35,7 @@ export default function MenuLateral(props: IMenuLateral) {
       </ul>
       <ul>
         <MenuItem
-          onClick={() => console.log("Saindo")}
+          onClick={logout}
           texto="Sair"
           className="text-red-600 dark:text-red-600 
           hover:bg-red-600 
