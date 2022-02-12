@@ -4,21 +4,33 @@ import { IconGithub, IconGoogle, IconWarning } from "../components/icons";
 import useAuth from "../data/hook/useAuth";
 
 export default function Authenticate() {
-  const {user, loginGoogle} = useAuth()
+  const { loginGoogle, loginGithub, login, registerEmailAndPassword } =
+    useAuth();
   const [mode, setMode] = useState<"login" | "register">("login");
   const [error, setError] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  function openError(msg, time = 5) {
+  function openError(msg, time = 7) {
     setError(msg);
     setTimeout(() => setError(null), time * 1000);
   }
 
-  function submitForm() {
-    if (mode === "login") console.log("Logar");
-    else console.log("cadastrar");
-    openError("Email ou senha não coincidem");
+  async function submitForm() {
+    try {
+      if (mode === "login") {
+        await login(email, password);
+      } else {
+        await registerEmailAndPassword(email, password);
+      }
+    } catch (e) {
+      openError(
+        e?.code === "auth/user-not-found"
+          ? "Uai minino, cê ainda não se cadastrou? clique em 'criar uma conta gratuíta' e acesse nosso portal."
+          : e.message ??
+              "Oxe, não consegui encontrar este problema em meus registros, tente novamente ou entre em contato com o suporte."
+      );
+    }
   }
 
   return (
@@ -112,7 +124,7 @@ export default function Authenticate() {
           <IconGoogle />
         </button>
         <button
-          onClick={submitForm}
+          onClick={loginGithub}
           title="Entrar com Github"
           className={`
                 w-full bg-gray-300 hover:bg-gray-200

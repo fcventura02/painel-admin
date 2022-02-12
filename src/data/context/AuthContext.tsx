@@ -8,8 +8,10 @@ interface IAuthContext {
   user?: IUser;
   loading?: boolean;
   logout?: () => Promise<void>;
+  login?: (email: string, password: string) => Promise<void>;
   loginGoogle?: () => Promise<void>;
   loginGithub?: () => Promise<void>;
+  registerEmailAndPassword?: (email: string, password: string) => Promise<void>;
 }
 
 const AuthContex = createContext<IAuthContext>({});
@@ -55,6 +57,34 @@ export function AuthProvider(props) {
     }
   }
 
+  async function login(email, password) {
+    try {
+      setLoading(true);
+      const resp = await firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password);
+
+      await configSection(resp.user);
+      Router.push("/");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function registerEmailAndPassword(email, password) {
+    try {
+      setLoading(true);
+      const resp = await firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+
+      await configSection(resp.user);
+      Router.push("/");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   async function loginGoogle() {
     try {
       setLoading(true);
@@ -62,7 +92,20 @@ export function AuthProvider(props) {
         .auth()
         .signInWithPopup(new firebase.auth.GoogleAuthProvider());
 
-      configSection(resp.user);
+      await configSection(resp.user);
+      Router.push("/");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function loginGithub() {
+    try {
+      setLoading(true);
+      const resp = await firebase
+        .auth()
+        .signInWithPopup(new firebase.auth.GithubAuthProvider());
+      await configSection(resp.user);
       Router.push("/");
     } finally {
       setLoading(false);
@@ -84,7 +127,7 @@ export function AuthProvider(props) {
       const cancelar = firebase.auth().onAuthStateChanged(configSection);
       return () => cancelar();
     } else {
-      setLoading(false)
+      setLoading(false);
     }
   }, []);
 
@@ -94,7 +137,10 @@ export function AuthProvider(props) {
         user,
         loading,
         logout,
+        login,
         loginGoogle,
+        loginGithub,
+        registerEmailAndPassword,
       }}
     >
       {props.children}
